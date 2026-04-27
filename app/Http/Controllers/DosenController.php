@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
-use App\Http\Requests\StoreDosenRequest;
-use App\Http\Requests\UpdateDosenRequest;
+use Illuminate\Http\Request;
 
-class DosenController extends Controller
+class DosenController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('dosen.index', [
+            'dosen' => Dosen::all()
+        ]);
     }
 
     /**
@@ -21,46 +22,63 @@ class DosenController extends Controller
      */
     public function create()
     {
-        //
+        return view('dosen.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDosenRequest $request)
+    public function store(Request $request)
     {
-        //
+        $data = $request->except('_token');
+
+        Dosen::create($data);
+
+        return redirect()->action([DosenController::class, 'index']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Dosen $dosen)
+    public function show($id)
     {
-        //
+        return Dosen::find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dosen $dosen)
+    public function edit($id)
     {
-        //
+        return view('dosen.edit', [
+            'dosen' => Dosen::find($id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDosenRequest $request, Dosen $dosen)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->except('_token');
+
+        Dosen::find($id)->update($data);
+
+        return redirect()->action([DosenController::class, 'index']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dosen $dosen)
-    {
-        //
-    }
+    public function destroy($id)
+{
+    // 1. Cari data dosen berdasarkan ID
+    $dosen = \App\Models\Dosen::findOrFail($id);
+    
+    // 2. Hapus data tersebut
+    $dosen->delete();
+
+    // 3. Ini yang paling penting: Arahkan kembali ke halaman tabel!
+    return redirect()->route('dosen.index')->with('success', 'Data berhasil dihapus');
+}
 }
