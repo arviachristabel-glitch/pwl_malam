@@ -71,14 +71,9 @@ class MahasiswaController
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    // 1. Cari data mahasiswa berdasarkan ID
-    $mahasiswa = \App\Models\Mahasiswa::findOrFail($id);
-    
-    // 2. Hapus data tersebut
-    $mahasiswa->delete();
+    {
+        Mahasiswa::find($id)->delete();//
 
-    // 3. Ini yang paling penting: Arahkan kembali ke halaman tabel!
-    return redirect()->route('mahasiswa.index')->with('success', 'Data berhasil dihapus');
-}
+        return redirect()->action([MahasiswaController::class, 'index']);
+    }
 }

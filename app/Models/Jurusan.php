@@ -13,6 +13,8 @@ class Jurusan extends Model
 
     protected $fillable = [
         'Nama_Jurusan',
-        'Kode_Jurusan'
+        'Kode_Jurusan',
+        'Nomor Jurusan',
+        'Tanggal dibuat'
     ];
 }

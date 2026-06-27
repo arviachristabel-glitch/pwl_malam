@@ -71,14 +71,9 @@ class DosenController
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    // 1. Cari data dosen berdasarkan ID
-    $dosen = \App\Models\Dosen::findOrFail($id);
-    
-    // 2. Hapus data tersebut
-    $dosen->delete();
+    {
+        Dosen::find($id)->delete();//
 
-    // 3. Ini yang paling penting: Arahkan kembali ke halaman tabel!
-    return redirect()->route('dosen.index')->with('success', 'Data berhasil dihapus');
-}
-}
+        return redirect()->action([DosenController::class, 'index']);
+    }
+    }
